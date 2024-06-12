@@ -2340,7 +2340,7 @@ body {
 }
 
 :is(.dark .dark\:bg-dark-700){
-  background-color: #090e34b3;
+  background-color: #FF5733;
 }
 
 :is(.dark .dark\:bg-white){
