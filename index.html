@@ -1468,7 +1468,10 @@
           <h3 class="mb-4 text-2xl font-semibold text-dark dark:text-white md:text-[28px] md:leading-[1.42]">
             Envianos un Mensaje
           </h3>
-          <form>
+          <form  method="POST" id="form">
+
+            <input type="hidden" name="access_key" value="02fc885b-7886-4d6c-b594-d120a4cfa221">
+
             <div class="mb-[22px]">
               <label for="fullName" class="mb-4 block text-sm text-body-color dark:text-dark-6">Nombres*</label>
               <input type="text" name="fullName" placeholder="Nombres"
@@ -1496,6 +1499,50 @@
               </button>
             </div>
           </form>
+          <div id="result"></div>
+
+
+          <script>
+            const form = document.getElementById('form');
+            const result = document.getElementById('result');
+            
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              const formData = new FormData(form);
+              const object = Object.fromEntries(formData);
+              const json = JSON.stringify(object);
+              result.innerHTML = "Please wait..."
+            
+                fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: json
+                    })
+                    .then(async (response) => {
+                        let json = await response.json();
+                        if (response.status == 200) {
+                            result.innerHTML = "Mensaje envido";
+                        } else {
+                            console.log(response);
+                            result.innerHTML = json.message;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        result.innerHTML = "Something went wrong!";
+                    })
+                    .then(function() {
+                        form.reset();
+                        setTimeout(() => {
+                            result.style.display = "none";
+                        }, 3000);
+                    });
+            });
+            </script>
+
         </div>
 
     
